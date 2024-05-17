@@ -1,7 +1,9 @@
 import express from "express";
 import morgan from "morgan";
 import authRoutes from "./routes/auth.routes.js";
-import salidasRoutes from "./routes/salidas.routes.js";
+import gastosRoutes from "./routes/gastos.routes.js";
+import proveedoresRoutes from "./routes/proveedor.routes.js";
+import categoriasRoutes from "./routes/categorias.routes.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import bodyParser from "body-parser";
@@ -30,7 +32,9 @@ app.use(bodyParser.json());
 app.get("/", (req, res) => res.json({ message: "Welcome to my API" }));
 
 app.use("/api/auth", authRoutes);
-app.use("/api", salidasRoutes);
+app.use("/api", gastosRoutes);
+app.use("/api", proveedoresRoutes);
+app.use("/api", categoriasRoutes);
 
 if (process.env.NODE_ENV === "production") {
   const path = await import("path");
