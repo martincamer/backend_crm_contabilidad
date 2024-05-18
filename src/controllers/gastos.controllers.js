@@ -41,7 +41,7 @@ export const createGasto = async (req, res) => {
       impuestos_total,
       descuentos_total,
       total_final,
-      impuestos,
+      estado,
       date,
     } = req.body;
 
@@ -59,7 +59,7 @@ export const createGasto = async (req, res) => {
       impuestos_total,
       descuentos_total,
       total_final,
-      impuestos,
+      estado,
       date,
       user_nombre: req.user.nombre,
       user_apellido: req.user.apellido,
@@ -97,7 +97,7 @@ export const updateGasto = async (req, res) => {
       impuestos_total,
       descuentos_total,
       total_final,
-      impuestos,
+      estado,
       date,
     } = req.body;
 
@@ -120,7 +120,7 @@ export const updateGasto = async (req, res) => {
     gastoExistente.impuestos_total = impuestos_total;
     gastoExistente.descuentos_total = descuentos_total;
     gastoExistente.total_final = total_final;
-    gastoExistente.impuestos = impuestos;
+    gastoExistente.estado = estado;
     gastoExistente.date = date;
 
     // Actualizar los campos específicos del usuario (asumiendo que no se deben cambiar directamente desde la solicitud)

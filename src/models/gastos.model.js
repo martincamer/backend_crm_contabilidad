@@ -50,10 +50,6 @@ const gastoSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    impuestos: {
-      type: Number,
-      default: "",
-    },
     //usuario datos
     user_nombre: {
       type: String,
@@ -86,6 +82,11 @@ const gastoSchema = new mongoose.Schema(
     user: {
       type: mongoose.Types.ObjectId,
       ref: "User",
+    },
+    estado: {
+      type: String,
+      enum: ["aceptado", "pendiente", "rechazado"],
+      default: "pendiente",
     },
     date: {
       type: Date,
