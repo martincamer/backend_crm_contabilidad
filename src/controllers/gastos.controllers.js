@@ -1,4 +1,5 @@
 import Gasto from "../models/gastos.model.js";
+import Caja from "../models/cajas.model.js"; // Importa el modelo de Caja
 
 // Obtener todos los gastos
 export const getGastos = async (req, res) => {
@@ -24,6 +25,61 @@ export const getGasto = async (req, res) => {
     res.status(500).json({ message: "Error al obtener el gasto" });
   }
 };
+
+// // Crear un nuevo gasto
+// export const createGasto = async (req, res) => {
+//   try {
+//     const {
+//       empresa_proveedor,
+//       detalles,
+//       comprobante,
+//       numero_factura,
+//       fecha,
+//       fecha_vencimiento,
+//       terminos_pago,
+//       categoria,
+//       total,
+//       impuestos_total,
+//       descuentos_total,
+//       total_final,
+//       estado,
+//       date,
+//     } = req.body;
+
+//     // Crear el nuevo gasto
+//     const nuevoGasto = new Gasto({
+//       empresa_proveedor,
+//       detalles,
+//       comprobante,
+//       numero_factura,
+//       fecha,
+//       fecha_vencimiento,
+//       terminos_pago,
+//       categoria,
+//       total,
+//       impuestos_total,
+//       descuentos_total,
+//       total_final,
+//       estado,
+//       date,
+//       user_nombre: req.user.nombre,
+//       user_apellido: req.user.apellido,
+//       user_localidad: req.user.localidad,
+//       user_provincia: req.user.provincia,
+//       user_fabrica: req.user.fabrica,
+//       user_puesto_sector: req.user.puesto_sector,
+//       username: req.user.username,
+//       user: req.user.id,
+//     });
+
+//     await nuevoGasto.save(); // Guardar el nuevo gasto en la base de datos
+
+//     res.status(201).json(nuevoGasto); // Devolver el nuevo gasto creado
+//   } catch (error) {
+//     console.error("Error al crear el gasto:", error);
+//     res.status(500).json({ message: "Error al crear el gasto" });
+//   }
+// };
 
 // Crear un nuevo gasto
 export const createGasto = async (req, res) => {
@@ -71,9 +127,26 @@ export const createGasto = async (req, res) => {
       user: req.user.id,
     });
 
-    await nuevoGasto.save(); // Guardar el nuevo gasto en la base de datos
+    // Guardar el nuevo gasto en la base de datos
+    await nuevoGasto.save();
 
-    res.status(201).json(nuevoGasto); // Devolver el nuevo gasto creado
+    // Buscar la caja correspondiente (por ejemplo, por nombre y fábrica)
+    const caja = await Caja.findOne({
+      fabrica: req.user.fabrica,
+    });
+
+    if (!caja) {
+      return res.status(404).json({ message: "Caja no encontrada" });
+    }
+
+    // Descontar el total_final del saldo de la caja
+    caja.saldo -= total_final;
+
+    // Guardar los cambios en la caja
+    await caja.save();
+
+    // Devolver el nuevo gasto creado
+    res.status(201).json(nuevoGasto);
   } catch (error) {
     console.error("Error al crear el gasto:", error);
     res.status(500).json({ message: "Error al crear el gasto" });
@@ -153,5 +226,31 @@ export const deleteGasto = async (req, res) => {
   } catch (error) {
     console.error("Error al eliminar el gasto:", error);
     res.status(500).json({ message: "Error al eliminar el gasto" });
+  }
+};
+
+// Actualizar solo el estado de un gasto por ID
+export const updateGastoEstado = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { estado } = req.body;
+
+    // Buscar y actualizar el estado del gasto por ID
+    const gastoActualizado = await Gasto.findByIdAndUpdate(
+      id,
+      { estado },
+      { new: true, runValidators: true } // Retornar el documento actualizado
+    );
+
+    if (!gastoActualizado) {
+      return res.status(404).json({ message: "Gasto no encontrado" });
+    }
+
+    res.status(200).json(gastoActualizado); // Devolver el gasto con el estado actualizado
+  } catch (error) {
+    console.error("Error al actualizar el estado del gasto:", error);
+    res
+      .status(500)
+      .json({ message: "Error al actualizar el estado del gasto" });
   }
 };

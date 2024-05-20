@@ -5,6 +5,7 @@ import {
   deleteGasto,
   getGasto,
   updateGasto,
+  updateGastoEstado,
 } from "../controllers/gastos.controllers.js"; // Importar las funciones del controlador
 import { auth } from "../middlewares/auth.middleware.js"; // Middleware de autenticación
 
@@ -24,5 +25,7 @@ router.put("/gastos/:id", auth, updateGasto); // Autenticación y actualizar gas
 
 // Eliminar un gasto por ID
 router.delete("/gastos/:id", auth, deleteGasto); // Autenticación y eliminación por ID
+
+router.put("/gastos/:id/estado", updateGastoEstado);
 
 export default router;
