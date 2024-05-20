@@ -4,6 +4,7 @@ import authRoutes from "./routes/auth.routes.js";
 import gastosRoutes from "./routes/gastos.routes.js";
 import proveedoresRoutes from "./routes/proveedor.routes.js";
 import categoriasRoutes from "./routes/categorias.routes.js";
+import cajasRoutes from "./routes/cajas.routes.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import bodyParser from "body-parser";
@@ -35,6 +36,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api", gastosRoutes);
 app.use("/api", proveedoresRoutes);
 app.use("/api", categoriasRoutes);
+app.use("/api", cajasRoutes);
 
 if (process.env.NODE_ENV === "production") {
   const path = await import("path");
