@@ -26,60 +26,15 @@ export const getGasto = async (req, res) => {
   }
 };
 
-// // Crear un nuevo gasto
-// export const createGasto = async (req, res) => {
-//   try {
-//     const {
-//       empresa_proveedor,
-//       detalles,
-//       comprobante,
-//       numero_factura,
-//       fecha,
-//       fecha_vencimiento,
-//       terminos_pago,
-//       categoria,
-//       total,
-//       impuestos_total,
-//       descuentos_total,
-//       total_final,
-//       estado,
-//       date,
-//     } = req.body;
-
-//     // Crear el nuevo gasto
-//     const nuevoGasto = new Gasto({
-//       empresa_proveedor,
-//       detalles,
-//       comprobante,
-//       numero_factura,
-//       fecha,
-//       fecha_vencimiento,
-//       terminos_pago,
-//       categoria,
-//       total,
-//       impuestos_total,
-//       descuentos_total,
-//       total_final,
-//       estado,
-//       date,
-//       user_nombre: req.user.nombre,
-//       user_apellido: req.user.apellido,
-//       user_localidad: req.user.localidad,
-//       user_provincia: req.user.provincia,
-//       user_fabrica: req.user.fabrica,
-//       user_puesto_sector: req.user.puesto_sector,
-//       username: req.user.username,
-//       user: req.user.id,
-//     });
-
-//     await nuevoGasto.save(); // Guardar el nuevo gasto en la base de datos
-
-//     res.status(201).json(nuevoGasto); // Devolver el nuevo gasto creado
-//   } catch (error) {
-//     console.error("Error al crear el gasto:", error);
-//     res.status(500).json({ message: "Error al crear el gasto" });
-//   }
-// };
+// Crear un nuevo gasto
+const tiposDePagoBanco = [
+  { id: 2, nombre: "tarjeta de Crédito" },
+  { id: 3, nombre: "tarjeta de Débito" },
+  { id: 4, nombre: "transferencia Bancaria" },
+  { id: 5, nombre: "payPal" },
+  { id: 6, nombre: "cheque" },
+  { id: 7, nombre: "criptomonedas" },
+];
 
 // Crear un nuevo gasto
 export const createGasto = async (req, res) => {
@@ -130,20 +85,25 @@ export const createGasto = async (req, res) => {
     // Guardar el nuevo gasto en la base de datos
     await nuevoGasto.save();
 
-    // Buscar la caja correspondiente (por ejemplo, por nombre y fábrica)
-    const caja = await Caja.findOne({
-      fabrica: req.user.fabrica,
-    });
-
-    if (!caja) {
-      return res.status(404).json({ message: "Caja no encontrada" });
+    if (terminos_pago === "efectivo") {
+      // Actualizar la caja
+      const caja = await Caja.findOne({ fabrica: req.user.fabrica });
+      if (!caja) {
+        return res.status(404).json({ message: "Caja no encontrada" });
+      }
+      // Descontar el total_final del saldo de la caja
+      caja.saldo -= total_final;
+      await caja.save();
+    } else if (tiposDePagoBanco.some((pago) => pago.nombre === terminos_pago)) {
+      // Actualizar el banco
+      const banco = await Banco.findOne({ fabrica: req.user.fabrica });
+      if (!banco) {
+        return res.status(404).json({ message: "Banco no encontrado" });
+      }
+      // Descontar el total_final del saldo del banco
+      banco.saldo -= total_final;
+      await banco.save();
     }
-
-    // Descontar el total_final del saldo de la caja
-    caja.saldo -= total_final;
-
-    // Guardar los cambios en la caja
-    await caja.save();
 
     // Devolver el nuevo gasto creado
     res.status(201).json(nuevoGasto);
@@ -152,6 +112,76 @@ export const createGasto = async (req, res) => {
     res.status(500).json({ message: "Error al crear el gasto" });
   }
 };
+// export const createGasto = async (req, res) => {
+//   try {
+//     const {
+//       empresa_proveedor,
+//       detalles,
+//       comprobante,
+//       numero_factura,
+//       fecha,
+//       fecha_vencimiento,
+//       terminos_pago,
+//       categoria,
+//       total,
+//       impuestos_total,
+//       descuentos_total,
+//       total_final,
+//       estado,
+//       date,
+//     } = req.body;
+
+//     // Crear el nuevo gasto
+//     const nuevoGasto = new Gasto({
+//       empresa_proveedor,
+//       detalles,
+//       comprobante,
+//       numero_factura,
+//       fecha,
+//       fecha_vencimiento,
+//       terminos_pago,
+//       categoria,
+//       total,
+//       impuestos_total,
+//       descuentos_total,
+//       total_final,
+//       estado,
+//       date,
+//       user_nombre: req.user.nombre,
+//       user_apellido: req.user.apellido,
+//       user_localidad: req.user.localidad,
+//       user_provincia: req.user.provincia,
+//       user_fabrica: req.user.fabrica,
+//       user_puesto_sector: req.user.puesto_sector,
+//       username: req.user.username,
+//       user: req.user.id,
+//     });
+
+//     // Guardar el nuevo gasto en la base de datos
+//     await nuevoGasto.save();
+
+//     // Buscar la caja correspondiente (por ejemplo, por nombre y fábrica)
+//     const caja = await Caja.findOne({
+//       fabrica: req.user.fabrica,
+//     });
+
+//     if (!caja) {
+//       return res.status(404).json({ message: "Caja no encontrada" });
+//     }
+
+//     // Descontar el total_final del saldo de la caja
+//     caja.saldo -= total_final;
+
+//     // Guardar los cambios en la caja
+//     await caja.save();
+
+//     // Devolver el nuevo gasto creado
+//     res.status(201).json(nuevoGasto);
+//   } catch (error) {
+//     console.error("Error al crear el gasto:", error);
+//     res.status(500).json({ message: "Error al crear el gasto" });
+//   }
+// };
 
 // Actualizar un gasto por ID
 export const updateGasto = async (req, res) => {

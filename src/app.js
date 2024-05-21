@@ -6,6 +6,8 @@ import proveedoresRoutes from "./routes/proveedor.routes.js";
 import categoriasRoutes from "./routes/categorias.routes.js";
 import cajasRoutes from "./routes/cajas.routes.js";
 import clientesRoutes from "./routes/clientes.routes.js";
+import bancoRoutes from "./routes/banco.routes.js";
+import ingresosRoutes from "./routes/ingresos.routes.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import bodyParser from "body-parser";
@@ -38,7 +40,9 @@ app.use("/api", gastosRoutes);
 app.use("/api", proveedoresRoutes);
 app.use("/api", categoriasRoutes);
 app.use("/api", cajasRoutes);
+app.use("/api", bancoRoutes);
 app.use("/api", clientesRoutes);
+app.use("/api", ingresosRoutes);
 
 if (process.env.NODE_ENV === "production") {
   const path = await import("path");

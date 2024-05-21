@@ -5,6 +5,7 @@ import {
   deleteCliente,
   getCliente,
   updateCliente,
+  createEntrega,
 } from "../controllers/clientes.controllers.js"; // Importar las funciones del controlador de clientes
 import { auth } from "../middlewares/auth.middleware.js"; // Middleware de autenticación
 
@@ -15,6 +16,9 @@ router.get("/clientes", auth, getClientes);
 
 // Crear un nuevo cliente
 router.post("/clientes", auth, createCliente);
+
+//nueva entrega
+router.post("/clientes/:id/entregas", auth, createEntrega);
 
 // Obtener un cliente por ID
 router.get("/clientes/:id", auth, getCliente);

@@ -13,6 +13,33 @@ const cuotaSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  tipo_pago: {
+    type: String,
+    default: "",
+  },
+  created_at: {
+    type: Date,
+    default: Date.now,
+  },
+});
+
+const EntregaSchema = new mongoose.Schema({
+  total: {
+    type: Number,
+    required: true,
+  },
+  comprobante: {
+    type: String,
+    default: "",
+  },
+  tipo_pago: {
+    type: String,
+    required: true,
+  },
+  created_at: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 const clienteSchema = new mongoose.Schema(
@@ -63,12 +90,16 @@ const clienteSchema = new mongoose.Schema(
       default: "",
     },
     entregas: {
-      type: Array,
+      type: [EntregaSchema],
       default: [],
     },
     cuotas_plan: {
       type: [cuotaSchema],
       default: [],
+    },
+    termino_pago: {
+      type: String,
+      default: "",
     },
     seña: {
       type: Number,
