@@ -119,6 +119,7 @@ export const createCliente = async (req, res) => {
       seña,
       total_vivienda,
       termino_pago,
+      comprobante,
       date,
     } = req.body;
 
@@ -140,6 +141,7 @@ export const createCliente = async (req, res) => {
       seña,
       total_vivienda,
       termino_pago,
+      comprobante,
       date,
       user_nombre: req.user.nombre,
       user_apellido: req.user.apellido,

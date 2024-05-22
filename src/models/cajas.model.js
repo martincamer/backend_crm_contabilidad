@@ -1,5 +1,36 @@
 import mongoose from "mongoose";
 
+const movimientoSchema = new mongoose.Schema({
+  total: {
+    type: Number,
+    default: 0,
+  },
+  comprobante: {
+    type: String,
+    default: "",
+  },
+  tipo_pago: {
+    type: String,
+    default: "",
+  },
+  empresa_proveedor: {
+    type: Object,
+    default: {},
+  },
+  date: {
+    type: Date,
+    default: Date.now,
+  },
+  terminos_pago: {
+    type: String,
+    default: "",
+  },
+  categoria: {
+    type: Object,
+    default: {},
+  },
+});
+
 const cajaSchema = new mongoose.Schema(
   {
     nombre: {
@@ -22,6 +53,7 @@ const cajaSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    movimientos_caja: [movimientoSchema], // Arreglo de objetos de tipo movimientoSchema
   },
   {
     timestamps: true,

@@ -109,6 +109,10 @@ const clienteSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    comprobante: {
+      type: String,
+      default: "",
+    },
     //usuario datos
     user_nombre: {
       type: String,
