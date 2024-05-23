@@ -1,13 +1,45 @@
 import mongoose from "mongoose";
 
-const recibos_sueldo = new mongoose.Schema({
-  recibo: {
+const reciboSueldoSchema = new mongoose.Schema({
+  nombre: {
     type: String,
     default: "",
   },
-  tipo: {
+  apellido: {
     type: String,
     default: "",
+  },
+  dni: {
+    type: String,
+    default: "",
+  },
+  sueldo: {
+    type: String,
+    default: "",
+  },
+  sector_trabajo: {
+    type: String,
+    default: "",
+  },
+  fabrica_sucursal: {
+    type: String,
+    default: "",
+  },
+  recibo: {
+    type: Object,
+    default: {},
+  },
+  termino_pago: {
+    type: String,
+    default: "",
+  },
+  antiguedad_total: {
+    type: String,
+    default: "",
+  },
+  fecha_ingreso: {
+    type: Date,
+    default: Date.now,
   },
   created_at: {
     type: Date,
@@ -42,7 +74,28 @@ const empleadoSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-    recibos: [recibos_sueldo], // Arreglo de objetos de tipo movimientoSchema
+    sector_trabajo: {
+      type: String,
+      default: "",
+    },
+    fabrica_sucursal: {
+      type: String,
+      default: "",
+    },
+    sueldo: {
+      type: Array,
+      default: [],
+    },
+    estado: {
+      type: String,
+      enum: ["trabajando", "enfermo", "reposo", "despedido", "accidentado"],
+      default: "trabajando",
+    },
+    recibos: [reciboSueldoSchema],
+    date: {
+      type: Date,
+      default: Date.now,
+    },
     //usuario datos
     user_nombre: {
       type: String,
@@ -75,15 +128,6 @@ const empleadoSchema = new mongoose.Schema(
     user: {
       type: mongoose.Types.ObjectId,
       ref: "User",
-    },
-    estado: {
-      type: String,
-      enum: ["enfermo", "reposo", "despedido", "accidentado"],
-      default: "trabajando",
-    },
-    date: {
-      type: Date,
-      default: Date.now,
     },
   },
   {

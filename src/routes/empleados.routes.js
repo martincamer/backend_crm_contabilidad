@@ -6,6 +6,7 @@ import {
   getEmpleado,
   updateEmpleado,
   updateEmpleadoEstado,
+  crearReciboEnEmpleado,
 } from "../controllers/empleados.controllers.js"; // Importar las funciones del controlador de empleados
 import { auth } from "../middlewares/auth.middleware.js"; // Middleware de autenticación
 
@@ -28,5 +29,7 @@ router.delete("/empleados/:id", auth, deleteEmpleado);
 
 // Actualizar solo el estado de un empleado por ID
 router.patch("/empleados/:id/estado", auth, updateEmpleadoEstado);
+
+router.post("/:id/recibo", crearReciboEnEmpleado);
 
 export default router;

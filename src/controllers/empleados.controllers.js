@@ -35,10 +35,9 @@ export const createEmpleado = async (req, res) => {
       fecha_nacimiento,
       fecha_ingreso,
       termino_pago,
-      seña,
-      total_vivienda,
-      recibos,
-      estado,
+      sector_trabajo,
+      fabrica_sucursal,
+      sueldo,
       date,
     } = req.body;
 
@@ -50,10 +49,9 @@ export const createEmpleado = async (req, res) => {
       fecha_nacimiento,
       fecha_ingreso,
       termino_pago,
-      seña,
-      total_vivienda,
-      recibos,
-      estado,
+      sector_trabajo,
+      fabrica_sucursal,
+      sueldo,
       date,
       user_nombre: req.user.nombre,
       user_apellido: req.user.apellido,
@@ -73,6 +71,54 @@ export const createEmpleado = async (req, res) => {
   } catch (error) {
     console.error("Error al crear el empleado:", error);
     res.status(500).json({ message: "Error al crear el empleado" });
+  }
+};
+
+export const crearReciboEnEmpleado = async (req, res) => {
+  const { id } = req.params;
+  const { termino_pago, recibo, fecha_ingreso, antiguedad_total } = req.body;
+
+  try {
+    // Buscar el empleado por su ID
+    const empleado = await Empleado.findById(id);
+
+    if (!empleado) {
+      return res.status(404).json({ error: "Empleado no encontrado" });
+    }
+
+    const nombre = empleado.nombre;
+    const apellido = empleado.apellido;
+    const dni = empleado.dni;
+    const fecha_nacimiento = empleado.fecha_nacimiento;
+    const sueldo = empleado.termino_pago;
+    const fabrica_sucursal = empleado.fabrica_sucursal;
+    const sector = empleado.sector;
+
+    // Agregar el nuevo recibo a la lista de recibos del empleado
+    empleado.recibos.push({
+      nombre,
+      apellido,
+      dni,
+      fecha_nacimiento,
+      sueldo,
+      fabrica_sucursal,
+      sector,
+      termino_pago,
+      fecha_ingreso,
+      recibo,
+      antiguedad_total,
+      created_at: new Date(),
+    });
+
+    // Guardar el empleado actualizado con el nuevo recibo
+    await empleado.save();
+
+    // Devolver una respuesta adecuada si es necesario
+    // res.status(201).json({ message: "Recibo creado correctamente", empleado });
+    res.status(201).json(empleado.recibos[empleado.recibos.length - 1]); // Devuelve el último recibo creado
+  } catch (error) {
+    console.error("Error creating receipt in employee:", error);
+    res.status(500).json({ error: "Error creating receipt in employee" });
   }
 };
 
