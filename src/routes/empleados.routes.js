@@ -28,7 +28,7 @@ router.put("/empleados/:id", auth, updateEmpleado);
 router.delete("/empleados/:id", auth, deleteEmpleado);
 
 // Actualizar solo el estado de un empleado por ID
-router.patch("/empleados/:id/estado", auth, updateEmpleadoEstado);
+router.patch("/empleados/estado/:id", auth, updateEmpleadoEstado);
 
 router.post("/:id/recibo", crearReciboEnEmpleado);
 

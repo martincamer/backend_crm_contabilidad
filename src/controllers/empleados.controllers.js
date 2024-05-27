@@ -92,7 +92,7 @@ export const crearReciboEnEmpleado = async (req, res) => {
     const fecha_nacimiento = empleado.fecha_nacimiento;
     const sueldo = empleado.termino_pago;
     const fabrica_sucursal = empleado.fabrica_sucursal;
-    const sector = empleado.sector;
+    const sector_trabajo = empleado.sector_trabajo;
 
     // Agregar el nuevo recibo a la lista de recibos del empleado
     empleado.recibos.push({
@@ -102,7 +102,7 @@ export const crearReciboEnEmpleado = async (req, res) => {
       fecha_nacimiento,
       sueldo,
       fabrica_sucursal,
-      sector,
+      sector_trabajo,
       termino_pago,
       fecha_ingreso,
       recibo,
@@ -137,6 +137,9 @@ export const updateEmpleado = async (req, res) => {
       total_vivienda,
       recibos,
       estado,
+      sueldo,
+      sector_trabajo,
+      fabrica_sucursal,
       date,
     } = req.body;
 
@@ -157,6 +160,9 @@ export const updateEmpleado = async (req, res) => {
     empleadoExistente.total_vivienda = total_vivienda;
     empleadoExistente.recibos = recibos;
     empleadoExistente.estado = estado;
+    empleadoExistente.sueldo = sueldo;
+    empleadoExistente.sector_trabajo = sector_trabajo;
+    empleadoExistente.fabrica_sucursal = fabrica_sucursal;
     empleadoExistente.date = date;
 
     // Actualizar los campos específicos del usuario
