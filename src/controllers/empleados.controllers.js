@@ -223,3 +223,272 @@ export const updateEmpleadoEstado = async (req, res) => {
       .json({ message: "Error al actualizar el estado del empleado" });
   }
 };
+
+// export const aumentarSueldo = async (req, res) => {
+//   try {
+//     const { fabrica, termino_pago, aumento, tipo_quincena } = req.body;
+
+//     if (!fabrica || !termino_pago || !aumento) {
+//       return res
+//         .status(400)
+//         .json({ message: "Datos incompletos para aumentar sueldo" });
+//     }
+
+//     const aumentoNumerico = Number(aumento);
+//     if (isNaN(aumentoNumerico)) {
+//       return res
+//         .status(400)
+//         .json({ message: "El aumento debe ser un número válido" });
+//     }
+
+//     const empleados = await Empleado.find({
+//       fabrica_sucursal: fabrica,
+//       termino_pago,
+//     });
+
+//     if (empleados.length === 0) {
+//       return res
+//         .status(404)
+//         .json({ message: "No se encontraron empleados para aumentar sueldo" });
+//     }
+
+//     const empleadosActualizados = [];
+
+//     for (let empleado of empleados) {
+//       if (termino_pago === "mensual") {
+//         if (empleado.sueldo.length > 0) {
+//           empleado.sueldo[0].sueldo_basico = String(
+//             Number(empleado.sueldo[0].sueldo_basico) + aumentoNumerico
+//           );
+//         }
+//       } else if (termino_pago === "quincenal") {
+//         if (tipo_quincena === "quincena_cinco") {
+//           if (
+//             empleado.sueldo.length > 0 &&
+//             empleado.sueldo[0].quincena_cinco.length > 0
+//           ) {
+//             empleado.sueldo[0].quincena_cinco[0].quincena_cinco = String(
+//               Number(empleado.sueldo[0].quincena_cinco[0].quincena_cinco) +
+//                 aumentoNumerico
+//             );
+//           }
+//         } else if (tipo_quincena === "quincena_veinte") {
+//           if (
+//             empleado.sueldo.length > 0 &&
+//             empleado.sueldo[1].quincena_veinte.length > 0
+//           ) {
+//             empleado.sueldo[1].quincena_veinte[0].quincena_veinte = String(
+//               Number(empleado.sueldo[1].quincena_veinte[0].quincena_veinte) +
+//                 aumentoNumerico
+//             );
+//           }
+//         }
+//       }
+
+//       // Guardar el empleado actualizado
+//       try {
+//         console.log("Empleado antes de guardar:", empleado);
+//         await empleado.save();
+//         console.log("Empleado después de guardar:", empleado);
+//         empleadosActualizados.push(empleado);
+//       } catch (error) {
+//         console.error("Error al guardar empleado:", error);
+//         return res.status(500).json({ message: "Error al guardar empleado" });
+//       }
+//     }
+
+//     res.status(200).json(empleadosActualizados);
+//   } catch (error) {
+//     console.error("Error al aumentar el sueldo:", error);
+//     res
+//       .status(500)
+//       .json({ message: "Error interno al procesar el aumento de sueldo" });
+//   }
+// };
+
+// export const aumentarSueldo = async (req, res) => {
+//   try {
+//     const { fabrica, termino_pago, aumento, tipo_quincena } = req.body;
+
+//     if (!fabrica || !termino_pago || !aumento) {
+//       return res
+//         .status(400)
+//         .json({ message: "Datos incompletos para aumentar sueldo" });
+//     }
+
+//     const aumentoNumerico = Number(aumento);
+//     if (isNaN(aumentoNumerico)) {
+//       return res
+//         .status(400)
+//         .json({ message: "El aumento debe ser un número válido" });
+//     }
+
+//     const empleados = await Empleado.find({
+//       fabrica_sucursal: fabrica,
+//       termino_pago,
+//     });
+
+//     if (empleados.length === 0) {
+//       return res
+//         .status(404)
+//         .json({ message: "No se encontraron empleados para aumentar sueldo" });
+//     }
+
+//     const empleadosActualizados = [];
+
+//     for (let empleado of empleados) {
+//       let updatedEmpleado = empleado; // Copia el objeto empleado
+
+//       if (termino_pago === "mensual") {
+//         if (updatedEmpleado.sueldo.length > 0) {
+//           updatedEmpleado.sueldo[0].sueldo_basico = String(
+//             Number(updatedEmpleado.sueldo[0].sueldo_basico) + aumentoNumerico
+//           );
+//         }
+//       } else if (termino_pago === "quincenal") {
+//         if (tipo_quincena === "quincena_cinco") {
+//           if (
+//             updatedEmpleado.sueldo.length > 0 &&
+//             updatedEmpleado.sueldo[0].quincena_cinco.length > 0
+//           ) {
+//             updatedEmpleado.sueldo[0].quincena_cinco[0].quincena_cinco = String(
+//               Number(
+//                 updatedEmpleado.sueldo[0].quincena_cinco[0].quincena_cinco
+//               ) + aumentoNumerico
+//             );
+//           }
+//         } else if (tipo_quincena === "quincena_veinte") {
+//           if (
+//             updatedEmpleado.sueldo.length > 0 &&
+//             updatedEmpleado.sueldo[1].quincena_veinte.length > 0
+//           ) {
+//             updatedEmpleado.sueldo[1].quincena_veinte[0].quincena_veinte =
+//               String(
+//                 Number(
+//                   updatedEmpleado.sueldo[1].quincena_veinte[0].quincena_veinte
+//                 ) + aumentoNumerico
+//               );
+//           }
+//         }
+//       }
+
+//       try {
+//         // Guardar el empleado actualizado
+//         console.log("Empleado antes de guardar:", updatedEmpleado);
+
+//         await updatedEmpleado.save();
+//         console.log("Empleado después de guardar:", updatedEmpleado);
+
+//         empleadosActualizados.push(updatedEmpleado);
+//       } catch (error) {
+//         console.error("Error al guardar empleado:", error);
+//         return res.status(500).json({ message: "Error al guardar empleado" });
+//       }
+//     }
+
+//     res.status(200).json(empleadosActualizados);
+//   } catch (error) {
+//     console.error("Error al aumentar el sueldo:", error);
+//     res
+//       .status(500)
+//       .json({ message: "Error interno al procesar el aumento de sueldo" });
+//   }
+// };
+
+export const aumentarSueldo = async (req, res) => {
+  try {
+    const { fabrica, termino_pago, aumento, tipo_quincena } = req.body;
+
+    if (!fabrica || !termino_pago || !aumento) {
+      return res
+        .status(400)
+        .json({ message: "Datos incompletos para aumentar sueldo" });
+    }
+
+    const aumentoNumerico = Number(aumento);
+    if (isNaN(aumentoNumerico)) {
+      return res
+        .status(400)
+        .json({ message: "El aumento debe ser un número válido" });
+    }
+
+    const empleados = await Empleado.find({
+      fabrica_sucursal: fabrica,
+      termino_pago,
+    });
+
+    if (empleados.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No se encontraron empleados para aumentar sueldo" });
+    }
+
+    const empleadosActualizados = [];
+
+    for (let empleado of empleados) {
+      let updatedEmpleado = empleado.toObject(); // Convertir a objeto plano para modificar
+
+      if (termino_pago === "mensual") {
+        if (updatedEmpleado.sueldo.length > 0) {
+          updatedEmpleado.sueldo[0].sueldo_basico = String(
+            Number(updatedEmpleado.sueldo[0].sueldo_basico) + aumentoNumerico
+          );
+        }
+      } else if (termino_pago === "quincenal") {
+        if (tipo_quincena === "quincena_cinco") {
+          if (
+            updatedEmpleado.sueldo.length > 0 &&
+            updatedEmpleado.sueldo[0].quincena_cinco.length > 0
+          ) {
+            updatedEmpleado.sueldo[0].quincena_cinco[0].quincena_cinco = String(
+              Number(
+                updatedEmpleado.sueldo[0].quincena_cinco[0].quincena_cinco
+              ) + aumentoNumerico
+            );
+          }
+        } else if (tipo_quincena === "quincena_veinte") {
+          if (
+            updatedEmpleado.sueldo.length > 0 &&
+            updatedEmpleado.sueldo[1].quincena_veinte.length > 0
+          ) {
+            updatedEmpleado.sueldo[1].quincena_veinte[0].quincena_veinte =
+              String(
+                Number(
+                  updatedEmpleado.sueldo[1].quincena_veinte[0].quincena_veinte
+                ) + aumentoNumerico
+              );
+          }
+        }
+      }
+
+      try {
+        // Actualizar el documento en la base de datos usando findByIdAndUpdate
+        const updated = await Empleado.findByIdAndUpdate(
+          empleado._id,
+          updatedEmpleado,
+          { new: true }
+        );
+
+        if (!updated) {
+          console.error("Error al encontrar o actualizar el empleado");
+          return res
+            .status(500)
+            .json({ message: "Error al actualizar el empleado" });
+        }
+
+        console.log("Empleado actualizado:", updated);
+        empleadosActualizados.push(updated);
+      } catch (error) {
+        console.error("Error al guardar empleado:", error);
+        return res.status(500).json({ message: "Error al guardar empleado" });
+      }
+    }
+
+    res.status(200).json(empleadosActualizados);
+  } catch (error) {
+    console.error("Error al aumentar el sueldo:", error);
+    res
+      .status(500)
+      .json({ message: "Error interno al procesar el aumento de sueldo" });
+  }
+};
