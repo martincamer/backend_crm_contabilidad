@@ -53,10 +53,15 @@ export const register = async (req, res) => {
       id: userSaved._id,
     });
 
+    // res.cookie("token", token, {
+    //   // httpOnly: process.env.NODE_ENV !== "development",
+    //   secure: true,
+    //   // sameSite: "none",
+    // });
     res.cookie("token", token, {
-      // httpOnly: process.env.NODE_ENV !== "development",
+      httpOnly: process.env.NODE_ENV,
       secure: true,
-      // sameSite: "none",
+      sameSite: "none",
     });
 
     res.json({
@@ -105,10 +110,15 @@ export const login = async (req, res) => {
       apellido: userFound.apellido,
     });
 
+    // res.cookie("token", token, {
+    //   // httpOnly: process.env.NODE_ENV !== "development",
+    //   secure: true,
+    //   // sameSite: "none",
+    // });
     res.cookie("token", token, {
-      // httpOnly: process.env.NODE_ENV !== "development",
+      httpOnly: process.env.NODE_ENV,
       secure: true,
-      // sameSite: "none",
+      sameSite: "none",
     });
 
     res.json({
@@ -165,6 +175,7 @@ export const logout = async (req, res) => {
     secure: true,
     expires: new Date(0),
   });
+
   return res.sendStatus(200);
 };
 
