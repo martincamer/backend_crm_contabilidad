@@ -1,9 +1,13 @@
-import Empleado from "../models/empleados.model.js"; // Importa el modelo de Empleado
+import Empleado from "../models/empleados.model.js";
+import Fabrica from "../models/fabricas.model.js";
+import Sectores from "../models/sectores.model.js";
 
 // Obtener todos los empleados
 export const getEmpleados = async (req, res) => {
   try {
-    const empleados = await Empleado.find({ user: req.user.id });
+    const empleados = await Empleado.find({
+      user_localidad: req.user.localidad,
+    });
     res.json(empleados);
   } catch (error) {
     console.error("Error al obtener los empleados:", error);
@@ -224,177 +228,6 @@ export const updateEmpleadoEstado = async (req, res) => {
   }
 };
 
-// export const aumentarSueldo = async (req, res) => {
-//   try {
-//     const { fabrica, termino_pago, aumento, tipo_quincena } = req.body;
-
-//     if (!fabrica || !termino_pago || !aumento) {
-//       return res
-//         .status(400)
-//         .json({ message: "Datos incompletos para aumentar sueldo" });
-//     }
-
-//     const aumentoNumerico = Number(aumento);
-//     if (isNaN(aumentoNumerico)) {
-//       return res
-//         .status(400)
-//         .json({ message: "El aumento debe ser un número válido" });
-//     }
-
-//     const empleados = await Empleado.find({
-//       fabrica_sucursal: fabrica,
-//       termino_pago,
-//     });
-
-//     if (empleados.length === 0) {
-//       return res
-//         .status(404)
-//         .json({ message: "No se encontraron empleados para aumentar sueldo" });
-//     }
-
-//     const empleadosActualizados = [];
-
-//     for (let empleado of empleados) {
-//       if (termino_pago === "mensual") {
-//         if (empleado.sueldo.length > 0) {
-//           empleado.sueldo[0].sueldo_basico = String(
-//             Number(empleado.sueldo[0].sueldo_basico) + aumentoNumerico
-//           );
-//         }
-//       } else if (termino_pago === "quincenal") {
-//         if (tipo_quincena === "quincena_cinco") {
-//           if (
-//             empleado.sueldo.length > 0 &&
-//             empleado.sueldo[0].quincena_cinco.length > 0
-//           ) {
-//             empleado.sueldo[0].quincena_cinco[0].quincena_cinco = String(
-//               Number(empleado.sueldo[0].quincena_cinco[0].quincena_cinco) +
-//                 aumentoNumerico
-//             );
-//           }
-//         } else if (tipo_quincena === "quincena_veinte") {
-//           if (
-//             empleado.sueldo.length > 0 &&
-//             empleado.sueldo[1].quincena_veinte.length > 0
-//           ) {
-//             empleado.sueldo[1].quincena_veinte[0].quincena_veinte = String(
-//               Number(empleado.sueldo[1].quincena_veinte[0].quincena_veinte) +
-//                 aumentoNumerico
-//             );
-//           }
-//         }
-//       }
-
-//       // Guardar el empleado actualizado
-//       try {
-//         console.log("Empleado antes de guardar:", empleado);
-//         await empleado.save();
-//         console.log("Empleado después de guardar:", empleado);
-//         empleadosActualizados.push(empleado);
-//       } catch (error) {
-//         console.error("Error al guardar empleado:", error);
-//         return res.status(500).json({ message: "Error al guardar empleado" });
-//       }
-//     }
-
-//     res.status(200).json(empleadosActualizados);
-//   } catch (error) {
-//     console.error("Error al aumentar el sueldo:", error);
-//     res
-//       .status(500)
-//       .json({ message: "Error interno al procesar el aumento de sueldo" });
-//   }
-// };
-
-// export const aumentarSueldo = async (req, res) => {
-//   try {
-//     const { fabrica, termino_pago, aumento, tipo_quincena } = req.body;
-
-//     if (!fabrica || !termino_pago || !aumento) {
-//       return res
-//         .status(400)
-//         .json({ message: "Datos incompletos para aumentar sueldo" });
-//     }
-
-//     const aumentoNumerico = Number(aumento);
-//     if (isNaN(aumentoNumerico)) {
-//       return res
-//         .status(400)
-//         .json({ message: "El aumento debe ser un número válido" });
-//     }
-
-//     const empleados = await Empleado.find({
-//       fabrica_sucursal: fabrica,
-//       termino_pago,
-//     });
-
-//     if (empleados.length === 0) {
-//       return res
-//         .status(404)
-//         .json({ message: "No se encontraron empleados para aumentar sueldo" });
-//     }
-
-//     const empleadosActualizados = [];
-
-//     for (let empleado of empleados) {
-//       let updatedEmpleado = empleado; // Copia el objeto empleado
-
-//       if (termino_pago === "mensual") {
-//         if (updatedEmpleado.sueldo.length > 0) {
-//           updatedEmpleado.sueldo[0].sueldo_basico = String(
-//             Number(updatedEmpleado.sueldo[0].sueldo_basico) + aumentoNumerico
-//           );
-//         }
-//       } else if (termino_pago === "quincenal") {
-//         if (tipo_quincena === "quincena_cinco") {
-//           if (
-//             updatedEmpleado.sueldo.length > 0 &&
-//             updatedEmpleado.sueldo[0].quincena_cinco.length > 0
-//           ) {
-//             updatedEmpleado.sueldo[0].quincena_cinco[0].quincena_cinco = String(
-//               Number(
-//                 updatedEmpleado.sueldo[0].quincena_cinco[0].quincena_cinco
-//               ) + aumentoNumerico
-//             );
-//           }
-//         } else if (tipo_quincena === "quincena_veinte") {
-//           if (
-//             updatedEmpleado.sueldo.length > 0 &&
-//             updatedEmpleado.sueldo[1].quincena_veinte.length > 0
-//           ) {
-//             updatedEmpleado.sueldo[1].quincena_veinte[0].quincena_veinte =
-//               String(
-//                 Number(
-//                   updatedEmpleado.sueldo[1].quincena_veinte[0].quincena_veinte
-//                 ) + aumentoNumerico
-//               );
-//           }
-//         }
-//       }
-
-//       try {
-//         // Guardar el empleado actualizado
-//         console.log("Empleado antes de guardar:", updatedEmpleado);
-
-//         await updatedEmpleado.save();
-//         console.log("Empleado después de guardar:", updatedEmpleado);
-
-//         empleadosActualizados.push(updatedEmpleado);
-//       } catch (error) {
-//         console.error("Error al guardar empleado:", error);
-//         return res.status(500).json({ message: "Error al guardar empleado" });
-//       }
-//     }
-
-//     res.status(200).json(empleadosActualizados);
-//   } catch (error) {
-//     console.error("Error al aumentar el sueldo:", error);
-//     res
-//       .status(500)
-//       .json({ message: "Error interno al procesar el aumento de sueldo" });
-//   }
-// };
-
 export const aumentarSueldo = async (req, res) => {
   try {
     const { fabrica, termino_pago, aumento, tipo_quincena } = req.body;
@@ -490,5 +323,89 @@ export const aumentarSueldo = async (req, res) => {
     res
       .status(500)
       .json({ message: "Error interno al procesar el aumento de sueldo" });
+  }
+};
+
+// Crear una nueva fabrica
+export const createFabrica = async (req, res) => {
+  try {
+    const { nombre, date } = req.body;
+
+    // Crear el nuevo empleado
+    const nuevaFabrica = new Fabrica({
+      nombre,
+      date,
+      user_nombre: req.user.nombre,
+      user_apellido: req.user.apellido,
+      user_localidad: req.user.localidad,
+      user_provincia: req.user.provincia,
+      user_fabrica: req.user.fabrica,
+      user_puesto_sector: req.user.puesto_sector,
+      username: req.user.username,
+      user: req.user.id,
+    });
+
+    // Guardar el nuevo empleado en la base de datos
+    await nuevaFabrica.save();
+
+    // Devolver el nuevo empleado creado
+    res.status(201).json(nuevaFabrica);
+  } catch (error) {
+    console.error("Error al crear el empleado:", error);
+    res.status(500).json({ message: "Error al crear el empleado" });
+  }
+};
+
+export const getFabricas = async (req, res) => {
+  try {
+    const empleados = await Fabrica.find({
+      user_localidad: req.user.localidad,
+    });
+    res.json(empleados);
+  } catch (error) {
+    console.error("Error al obtener los empleados:", error);
+    res.status(500).json({ message: "Error al obtener los empleados" });
+  }
+};
+
+// Crear una nueva fabrica
+export const createSectores = async (req, res) => {
+  try {
+    const { nombre, date } = req.body;
+
+    // Crear el nuevo empleado
+    const nuevaFabrica = new Sectores({
+      nombre,
+      date,
+      user_nombre: req.user.nombre,
+      user_apellido: req.user.apellido,
+      user_localidad: req.user.localidad,
+      user_provincia: req.user.provincia,
+      user_fabrica: req.user.fabrica,
+      user_puesto_sector: req.user.puesto_sector,
+      username: req.user.username,
+      user: req.user.id,
+    });
+
+    // Guardar el nuevo empleado en la base de datos
+    await nuevaFabrica.save();
+
+    // Devolver el nuevo empleado creado
+    res.status(201).json(nuevaFabrica);
+  } catch (error) {
+    console.error("Error al crear el empleado:", error);
+    res.status(500).json({ message: "Error al crear el empleado" });
+  }
+};
+
+export const getSectores = async (req, res) => {
+  try {
+    const empleados = await Sectores.find({
+      user_localidad: req.user.localidad,
+    });
+    res.json(empleados);
+  } catch (error) {
+    console.error("Error al obtener los empleados:", error);
+    res.status(500).json({ message: "Error al obtener los empleados" });
   }
 };

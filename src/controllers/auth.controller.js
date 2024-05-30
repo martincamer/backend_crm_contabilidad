@@ -100,6 +100,9 @@ export const login = async (req, res) => {
       localidad: userFound.localidad,
       provincia: userFound.provincia,
       fabrica: userFound.fabrica,
+      puesto_sector: userFound.puesto_sector,
+      nombre: userFound.nombre,
+      apellido: userFound.apellido,
     });
 
     res.cookie("token", token, {
@@ -119,6 +122,9 @@ export const login = async (req, res) => {
       localidad: userFound.localidad,
       provincia: userFound.provincia,
       fabrica: userFound.fabrica,
+      puesto_sector: userFound.puesto_sector,
+      nombre: userFound.nombre,
+      apellido: userFound.apellido,
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -146,6 +152,9 @@ export const verifyToken = async (req, res) => {
       localidad: userFound.localidad,
       provincia: userFound.provincia,
       fabrica: userFound.fabrica,
+      puesto_sector: userFound.puesto_sector,
+      nombre: userFound.nombre,
+      apellido: userFound.apellido,
     });
   });
 };

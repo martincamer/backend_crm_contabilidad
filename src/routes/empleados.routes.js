@@ -8,6 +8,10 @@ import {
   updateEmpleadoEstado,
   crearReciboEnEmpleado,
   aumentarSueldo,
+  createFabrica,
+  getFabricas,
+  getSectores,
+  createSectores,
 } from "../controllers/empleados.controllers.js"; // Importar las funciones del controlador de empleados
 import { auth } from "../middlewares/auth.middleware.js"; // Middleware de autenticación
 
@@ -34,5 +38,15 @@ router.patch("/empleados/estado/:id", auth, updateEmpleadoEstado);
 router.post("/:id/recibo", crearReciboEnEmpleado);
 
 router.post("/empleados/aumentar-sueldo", auth, aumentarSueldo);
+
+//fabricas
+router.post("/crear-fabrica", auth, createFabrica);
+
+router.get("/fabricas", auth, getFabricas);
+
+//sectores
+router.post("/crear-sector", auth, createSectores);
+
+router.get("/sectores", auth, getSectores);
 
 export default router;
