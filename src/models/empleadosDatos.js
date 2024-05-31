@@ -3,8 +3,8 @@ import mongoose from "mongoose";
 const empleadoDatosSchema = new mongoose.Schema(
   {
     empleados: {
-      type: Object,
-      default: {},
+      type: Buffer, // Cambiado a Buffer para admitir hasta 16MB de datos
+      default: Buffer.alloc(0), // Valor por defecto como un Buffer vacío
     },
     date: {
       // Cambiar a fecha para que coincida con la búsqueda
