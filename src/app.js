@@ -40,6 +40,7 @@ app.use(bodyParser.json());
 // Routes
 app.get("/", (req, res) => res.json({ message: "Welcome to my API" }));
 
+// Routes
 app.use("/api/auth", authRoutes);
 app.use("/api", gastosRoutes);
 app.use("/api", proveedoresRoutes);
