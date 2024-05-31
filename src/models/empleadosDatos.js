@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const empleadoDatosSchema = new mongoose.Schema(
   {
     empleados: {
-      type: [],
+      type: Array,
       default: [],
     },
     date: {
