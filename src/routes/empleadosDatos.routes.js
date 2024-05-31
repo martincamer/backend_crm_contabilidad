@@ -10,8 +10,6 @@ import { auth } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-// Obtener todos los empleados
-
 // Crear un nuevo empleado
 router.post("/empleados-datos", auth, createEmpleado);
 

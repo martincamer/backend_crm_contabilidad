@@ -3,8 +3,8 @@ import mongoose from "mongoose";
 const empleadoDatosSchema = new mongoose.Schema(
   {
     empleados: {
-      type: Array,
-      default: [],
+      type: Object,
+      default: {},
     },
     date: {
       // Cambiar a fecha para que coincida con la búsqueda

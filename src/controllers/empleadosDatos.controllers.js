@@ -37,7 +37,6 @@ export const getEmpleado = async (req, res) => {
   }
 };
 
-// Crear un nuevo empleado
 export const createEmpleado = async (req, res) => {
   try {
     const { empleados, date } = req.body;
