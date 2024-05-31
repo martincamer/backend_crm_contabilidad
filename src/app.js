@@ -27,6 +27,9 @@ app.use(
   })
 );
 
+app.use(bodyParser.json({ limit: "16mb" }));
+app.use(bodyParser.urlencoded({ extended: true, limit: "16mb" }));
+
 app.use(morgan("dev"));
 app.use(cookieParser());
 app.use(express.json());
