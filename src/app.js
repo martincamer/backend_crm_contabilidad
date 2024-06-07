@@ -10,6 +10,7 @@ import bancoRoutes from "./routes/banco.routes.js";
 import ingresosRoutes from "./routes/ingresos.routes.js";
 import empleadosRoutes from "./routes/empleados.routes.js";
 import empleadosDatosRoutes from "./routes/empleadosDatos.routes.js";
+import estadisticaRoutes from "./routes/estadistica.routes.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import bodyParser from "body-parser";
@@ -51,6 +52,7 @@ app.use("/api", clientesRoutes);
 app.use("/api", ingresosRoutes);
 app.use("/api", empleadosRoutes);
 app.use("/api", empleadosDatosRoutes);
+app.use("/api", estadisticaRoutes);
 
 if (process.env.NODE_ENV === "production") {
   const path = await import("path");
