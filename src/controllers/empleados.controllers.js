@@ -126,6 +126,43 @@ export const crearReciboEnEmpleado = async (req, res) => {
   }
 };
 
+// Controlador para eliminar un recibo de un empleado
+export const eliminarReciboEnEmpleado = async (req, res) => {
+  const { idEmpleado, idRecibo } = req.params;
+
+  try {
+    // Buscar al empleado por su ID
+    const empleado = await Empleado.findById(idEmpleado);
+
+    if (!empleado) {
+      return res.status(404).json({ error: "Empleado no encontrado" });
+    }
+
+    // Encontrar el índice del recibo a eliminar
+    const indexRecibo = empleado.recibos.findIndex(
+      (recibo) => recibo._id.toString() === idRecibo.toString()
+    );
+
+    if (indexRecibo === -1) {
+      return res
+        .status(404)
+        .json({ error: "Recibo no encontrado en el empleado" });
+    }
+
+    // Eliminar el recibo del arreglo de recibos
+    empleado.recibos.splice(indexRecibo, 1);
+
+    // Guardar el empleado actualizado sin el recibo eliminado
+    await empleado.save();
+
+    // Devolver una respuesta adecuada con el empleado actualizado
+    res.json({ message: "Recibo eliminado correctamente", empleado });
+  } catch (error) {
+    console.error("Error eliminando recibo del empleado:", error);
+    res.status(500).json({ error: "Error eliminando recibo del empleado" });
+  }
+};
+
 // Actualizar un empleado por ID
 export const updateEmpleado = async (req, res) => {
   try {
@@ -139,7 +176,7 @@ export const updateEmpleado = async (req, res) => {
       termino_pago,
       seña,
       total_vivienda,
-      recibos,
+      // recibos,
       estado,
       sueldo,
       sector_trabajo,
@@ -162,7 +199,7 @@ export const updateEmpleado = async (req, res) => {
     empleadoExistente.termino_pago = termino_pago;
     empleadoExistente.seña = seña;
     empleadoExistente.total_vivienda = total_vivienda;
-    empleadoExistente.recibos = recibos;
+    // empleadoExistente.recibos = recibos;
     empleadoExistente.estado = estado;
     empleadoExistente.sueldo = sueldo;
     empleadoExistente.sector_trabajo = sector_trabajo;

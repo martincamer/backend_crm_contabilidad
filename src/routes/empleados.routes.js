@@ -12,6 +12,7 @@ import {
   getFabricas,
   getSectores,
   createSectores,
+  eliminarReciboEnEmpleado,
 } from "../controllers/empleados.controllers.js"; // Importar las funciones del controlador de empleados
 import { auth } from "../middlewares/auth.middleware.js"; // Middleware de autenticación
 
@@ -48,5 +49,10 @@ router.get("/fabricas", auth, getFabricas);
 router.post("/crear-sector", auth, createSectores);
 
 router.get("/sectores", auth, getSectores);
+
+router.delete(
+  "/empleados/:idEmpleado/recibos/:idRecibo",
+  eliminarReciboEnEmpleado
+);
 
 export default router;
