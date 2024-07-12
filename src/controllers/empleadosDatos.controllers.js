@@ -2,23 +2,41 @@ import EmpleadoDatos from "../models/empleadosDatos.js"; // Importa el modelo de
 
 // Obtener todos los empleados con filtro de fechas
 export const getEmpleados = async (req, res) => {
-  const { startDate, endDate } = req.body;
+  const { selectedYear, selectedMonth } = req.body;
 
   try {
-    console.log("startDate:", startDate);
-    console.log("endDate:", endDate);
+    console.log("selectedYear:", selectedYear);
+    console.log("selectedMonth:", selectedMonth);
 
+    // Validación básica de los datos recibidos
+    if (!selectedYear || !selectedMonth) {
+      return res
+        .status(400)
+        .json({ error: "Falta el año o mes en la solicitud" });
+    }
+
+    // Convertir el mes a número entero (de 1 a 12)
+    const searchMonth = parseInt(selectedMonth);
+
+    // Crear fechas de inicio y fin para el rango del mes y año especificados
+    const startDateQuery = new Date(selectedYear, searchMonth - 1, 1); // searchMonth - 1 porque los meses en JavaScript son de 0 a 11
+    const endDateQuery = new Date(selectedYear, searchMonth, 1); // Fecha de inicio del mes siguiente
+
+    console.log("startDateQuery:", startDateQuery);
+    console.log("endDateQuery:", endDateQuery);
+
+    // Consultar en MongoDB los empleados que coincidan con el rango de fechas
     const empleados = await EmpleadoDatos.find({
       date: {
-        $gte: new Date(startDate),
-        $lte: new Date(endDate),
+        $gte: startDateQuery,
+        $lt: endDateQuery,
       },
     });
 
     console.log("Empleados encontrados:", empleados);
     res.json(empleados);
   } catch (error) {
-    console.error("Error al obtener empleados por rango de fechas:", error);
+    console.error("Error al obtener empleados por año y mes:", error);
     res.status(500).json({ error: "Error interno del servidor" });
   }
 };
