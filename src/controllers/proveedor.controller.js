@@ -26,37 +26,23 @@ export const getProveedor = async (req, res) => {
 // Crear un nuevo proveedor
 export const createProveedor = async (req, res) => {
   try {
-    const {
-      nombre,
-      telefono,
-      direccion,
-      provincia,
-      localidad,
-      cp,
-      pais,
-      observaciones,
-      date,
-    } = req.body;
+    const { nombre, date } = req.body;
 
-    // Crear el nuevo proveedor
+    // Crear el nuevo proveedor utilizando el modelo Proveedor
     const nuevoProveedor = new Proveedor({
       nombre,
-      telefono,
-      direccion,
-      provincia,
-      localidad,
-      cp,
-      pais,
-      observaciones,
       date,
     });
 
+    // Guardar el nuevo proveedor en la base de datos
     await nuevoProveedor.save();
 
-    res.status(201).json(nuevoProveedor); // Devuelve el proveedor creado
+    // Devolver una respuesta de éxito con el proveedor creado
+    res.status(201).json(nuevoProveedor);
   } catch (error) {
+    // Capturar y manejar cualquier error que ocurra durante la creación del proveedor
     console.error("Error al crear el proveedor:", error);
-    res.status(500).json({ message: error.message }); // Manejo de errores
+    res.status(500).json({ message: error.message });
   }
 };
 

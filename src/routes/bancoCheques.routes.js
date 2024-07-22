@@ -6,7 +6,8 @@ import {
   updateBanco,
   deleteBanco,
   agregarCheque,
-  eliminarCheque, // Agregar esta importación para manejar la creación de cheques
+  eliminarCheque,
+  editarCheque, // Agregar esta importación para manejar la creación de cheques
 } from "../controllers/bancoCheques.controllers.js";
 import { auth } from "../middlewares/auth.middleware.js";
 
@@ -22,5 +23,6 @@ router.delete("/bancos-cheques/:id", auth, deleteBanco);
 // Ruta para agregar un nuevo cheque a un banco específico
 router.post("/cheques", auth, agregarCheque);
 router.delete("/eliminar-cheque/:id", eliminarCheque); // Ruta para eliminar un cheque por ID
+router.put("/actualizar-cheque/:id", editarCheque); // Ruta para eliminar un cheque por ID
 
 export default router;

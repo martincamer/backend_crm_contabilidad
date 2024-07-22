@@ -25,13 +25,17 @@ const chequesSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
-  numero_ruta: {
+  fecha_cobro: {
     type: String,
     default: "",
   },
   date: {
     type: Date,
     default: Date.now,
+  },
+  estado: {
+    type: String,
+    default: "pendiente el cobro",
   },
 });
 
